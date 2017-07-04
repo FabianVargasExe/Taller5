@@ -61,19 +61,19 @@ public class App implements IApp {
       if (!scanner.hasNext()) return;
       String line = scanner.next();
       if(line.substring(0, 1).matches("[a-zA-Z]+")||line.substring(0, 1).matches("[0-9]+")){
-          listaValida.add(line);
+          
           
           if(line.matches("[a-zA-Z]+")||line.matches("[0-9]+")||line.endsWith(",")){
           listaValida.add(line);   
-      System.out.println(line);
+
           }else{
-           
               listaErrores.add(line);    
           }
       }else{
       listaErrores.add(line);
       }
-      readFile();}
+      readFile();
+    }
     
     
   /* public void leer(String cadena, int i, int digito, int caract){
@@ -114,13 +114,13 @@ public class App implements IApp {
         try
         {
             
-        Iterator ite1 = listaErrores.iterator();
+        fichero = new FileWriter("errores.txt");
+         pw = new PrintWriter(fichero);      
+            
+        Iterator<String> ite1 = listaErrores.iterator();
         while(ite1.hasNext()){
              String error = (String) ite1.next();
                 
-         fichero = new FileWriter("errores.txt");
-         pw = new PrintWriter(fichero);  
-         
          pw.println("Palabra no válida: '" + error+"'" );
 
          }
@@ -147,16 +147,16 @@ public class App implements IApp {
         PrintWriter pw = null;
         try
         {
-        
-        Iterator ite1 = listaValida.iterator();
-        while(ite1.hasNext()){
-             String cadena = (String) ite1.next();   
             
          fichero = new FileWriter("TextoValido.txt");
          pw = new PrintWriter(fichero);  
-         
+        
+        Iterator<String> ite1 = listaValida.iterator();
+        while(ite1.hasNext()){
+             String cadena = (String) ite1.next();   
+   
          pw.print(cadena+" ");
-         pw.println();
+        
         }
 
         StdOut.println("\nEl archivo 'TextoValido.txt' se ha creado exitosamente.");

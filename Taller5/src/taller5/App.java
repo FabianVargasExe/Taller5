@@ -1,24 +1,16 @@
 
 
-
 package taller5;
 
 import java.io.BufferedReader;
-import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.io.FileReader;
 import java.io.FileWriter;
-import java.io.IOException;
-import java.io.InputStreamReader;
 import java.io.PrintWriter;
-import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
+import java.util.Scanner;
 import java.util.Iterator;
 import java.util.LinkedList;
-import java.util.StringTokenizer;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import ucn.StdIn;
 import ucn.StdOut;
 
@@ -52,51 +44,44 @@ public class App implements IApp {
         // Initialize the reader
          BufferedReader reader = null;
          try {
-             reader = new BufferedReader(new InputStreamReader(new FileInputStream(new File(filename)), "UTF-8"));
+             scanner = new Scanner(new FileInputStream(filename), "UTF-8"); 
          } 
          catch (FileNotFoundException e) {
              e.printStackTrace();
-         } catch (UnsupportedEncodingException ex) {
-              Logger.getLogger(App.class.getName()).log(Level.SEVERE, null, ex);
           }
-
-        myRecursion(reader);
+        readFile();
          
-     } //end main   
+     } 
     }
+
+    
+    private static Scanner scanner;
+
+    public void readFile() {
+      if (!scanner.hasNext()) return;
+      String line = scanner.next();
+      if(line.substring(0, 1).matches("[a-zA-Z]+")||line.substring(0, 1).matches("[0-9]+")){
+          listaValida.add(line);
+          
+          if(line.matches("[a-zA-Z]+")||line.matches("[0-9]+")||line.endsWith(",")){
+          listaValida.add(line);   
+      System.out.println(line);
+          }else{
+              listaErrores.add(line);    
+          }
+      }else{
+      listaErrores.add(line);
+      }
+      readFile();}
     
     
-    public static void myRecursion(BufferedReader br) 
-    {
-        String s1 = "";
-         
-        try {
-             s1 = br.readLine();
-         }
-         catch (IOException e) {
-             e.printStackTrace();
-         }
- 
-        if(s1 == null)
-            return;
-        else
-        {
-            int i = 0;
-            System.out.println (s1);
-
-            
-            myRecursion(br);
-            return;
-        }
-    }
-   
-
-   public void leer(String cadena, int i, int digito, int caract){
+  /* public void leer(String cadena, int i, int digito, int caract){
        
-       int c = 1;
        String ultimoCaracter = cadena.substring(cadena.length()-1);
        
        if(i < cadena.length()){
+           
+           if(cadena.endsWith(","))
 
            if(Character.isDigit(cadena.charAt(i)) && i == digito){
                digito ++;
@@ -105,48 +90,23 @@ public class App implements IApp {
            }
            else if(!Character.isAlphabetic(i) && i == caract){
                caract++;
-               leer(cadena, i+1, digito, caract);
-          
+               leer(cadena, i+1, digito, caract);       
            }   
            
         }else if (cadena.length() == digito || cadena.length() == caract){
-            
-           
+             
            listaValida.add(cadena);
               
         }else{
-           Error error = new Error(digito,"dd"); 
-           listaErrores.add(error); 
-           
+           Error error = new Error(digito, caract); 
+           listaErrores.add(error);      
         }
-                 
-        
-   }
+  
+   }*/
     
-   public void IterarLista (String[] a, int i){
-        
-      
-        if(!a[i].isEmpty()){
-           
-        leer(a[i], 0, 0, 0);
-        IterarLista(a , i+1);
-        }
-
-   }
-   
-
    @Override 
    public void RF1() {
        
-       Iterator ite = listaArchivos.iterator();
-       int i = 0;
-        while(ite.hasNext()){
-             String[] da = (String[]) ite.next();
-             IterarLista(da , i);
-             i++;
-        
-        
-        }
 
         FileWriter fichero = null;
         PrintWriter pw = null;
@@ -155,7 +115,7 @@ public class App implements IApp {
             
         Iterator ite1 = listaErrores.iterator();
         while(ite1.hasNext()){
-             Error error = (Error) ite1.next();
+             String error = (String) ite1.next();
                 
          fichero = new FileWriter("errores.txt");
          pw = new PrintWriter(fichero);  
@@ -187,15 +147,15 @@ public class App implements IApp {
         try
         {
         
-        Iterator ite = listaValida.iterator();
-        while(ite.hasNext()){
-             String cadena = (String) ite.next();   
+        Iterator ite1 = listaValida.iterator();
+        while(ite1.hasNext()){
+             String cadena = (String) ite1.next();   
             
          fichero = new FileWriter("TextoValido.txt");
          pw = new PrintWriter(fichero);  
          
-         pw.println(cadena+" ");
- 
+         pw.print(cadena+" ");
+         pw.println();
         }
 
         StdOut.println("\nEl archivo 'TextoValido.txt' se ha creado exitosamente.");

@@ -67,6 +67,7 @@ public class App implements IApp {
           listaValida.add(line);   
       System.out.println(line);
           }else{
+           
               listaErrores.add(line);    
           }
       }else{
@@ -120,7 +121,7 @@ public class App implements IApp {
          fichero = new FileWriter("errores.txt");
          pw = new PrintWriter(fichero);  
          
-         pw.println("Palabra no válida:+" + error.getPalabra() +"(La palabra contiene un carácter no válido en la posición"+ error.getPosicion()+")");
+         pw.println("Palabra no válida: '" + error+"'" );
 
          }
             StdOut.println("\nEl archivo 'errores.txt' se ha creado exitosamente.");
